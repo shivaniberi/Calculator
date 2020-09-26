@@ -1,0 +1,81 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace Task1Add
+{
+
+    class AbstractClass
+    {
+        public static void Sum(int a)
+        {
+            Console.WriteLine(a);
+            Console.ReadLine();
+        }
+        public static void Sum(params int[] a) //params keyword used for multiple parameters
+        {
+            int sum = 0;
+            foreach (var num1 in a)
+            {
+                if (num1 > 0)
+                {
+                    sum = sum + num1;
+                }
+                else
+                {
+                    foreach (var num2 in a)
+                    {
+                        if (num2 < 0)
+                        {
+                            Console.WriteLine(num2);
+                        }
+                    }
+                    Console.WriteLine("Negative numbers not allowed");
+                  break;
+                }
+            }
+            if (sum != 0)
+                Console.WriteLine(sum);
+            Console.ReadLine();
+        }
+    }
+    class Program : AbstractClass
+    {
+        static void Main(string[] args)
+        {
+            for (int i = 0; i < args.Length; i++)
+            {
+                string argument = args[i];
+
+                if (argument == "sum")
+                {
+                    if (args.Length == 1 || args[i].Contains(' '))
+                    {
+                        Sum(0);
+                    }
+                    if (args.Length >= 2)
+                    {
+                        string argument1 = args[1];
+                        if (!argument1.Contains(',') && !argument1.Contains(' ') && !argument1.Contains("\\n")
+                           && !argument1.Contains("\\") && !argument1.Contains('-'))
+                        {
+                            int m = int.Parse(argument1);
+                            Sum(m);
+                        }
+                        else if (argument1.Contains("\\n") || argument1.Contains(',')
+                            || argument1.Contains('\\') || argument1.Contains('-'))
+                        {
+                            string[] result = argument1.Split(new[] { "\\n", ",", "\\" }, StringSplitOptions.None);
+                            int[] ints = Array.ConvertAll(result, s => int.TryParse(s, out var x) ? x : -1);
+                            Sum(ints);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
